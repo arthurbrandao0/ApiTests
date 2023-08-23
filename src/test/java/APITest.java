@@ -12,7 +12,7 @@ public class APITest {
         RestAssured.baseURI = "https://petstore.swagger.io";
     }
 
-
+    @Test
     public void getStoreInventory() {
 
         Response response = RestAssured.get("/v2/store/inventory");
@@ -52,11 +52,15 @@ public class APITest {
                 .when()
                 .post("/v2/store/order");
 
-        // Obter o corpo da resposta como uma string
         String responseBody = response.getBody().asString();
-
-        // Imprimir o corpo da resposta na console
         System.out.println(responseBody);
 
+        response
+                .then()
+                .statusCode(200)
+                .body(
+                        "petId", equalTo(0),
+                        "id", not(equalTo((0)))
+                );
     }
 }
